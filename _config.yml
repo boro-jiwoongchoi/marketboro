@@ -30,17 +30,16 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Marketboro R&D
-subtitle: (Rhythm and Dance)
+title: 마켓보로 기술연구소
+subtitle: 개발팀블로그
 description: >- # this means to ignore newlines until "baseurl:"
-  This is the Rhythm favorite team.
-  and We are dance very well.  
-author: Cha 
+  식자재 유통사, 프랜차이즈 본사를 위한 유통 플랫폼, 모바일 발주, 결제, 배송, 고객관리 서비스.
+author: 기술연구소
 email: rnd@marketboro.com
 avatar: assets/images/logo.jpg
 
 # You'll want to customize url and baseurl for your own site:
-baseurl: "/marketboro" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://marketboro-rnd.github.io" # the base hostname & protocol for your site
 
 # Social settings
