@@ -90,5 +90,75 @@ dSLContext
 .from(goodsCategory)
 ````
 
-## Test
-* 컨트롤러에 대해 테스트를 기본적으로 하고, 필요시 서비스에 대한 테스트 케이스도 작성 
+## API 개발 프로세스
+* api 개발시 프로세스 구조는 기본적으로 controller -> service -> repository 로 합니다.
+  * Controller
+    * 클라이언트와 통신시, 필요한 서비스를 호출한후 리턴하는 역할을 수행합니다.
+  ```java
+  @Restcontroller
+  @RequiredArgsConstructor
+  public class GoodsController {
+
+    private final GoodsService goodsService;
+
+    @GetMapping("/goods")
+    public GoodsModel getGoods(SearchModel searchModel) {
+      return goodsService.getGoods(searchModel);
+    }
+
+  }
+  ```
+  * Service  
+    * 비지니스 로직을 수행합니다.
+  1. 하나의 서비스 및 레포지토리를 호출할 경우의 클래스명 입니다.
+  ```java
+  @Service
+  @RequiredArgsConstructor
+  public class GoodsService {
+
+    private final GoodsRepository goodsRepository;
+
+    public GoodsModel getGoods(SearchModel searchModel) {
+      return goodsRepository.findGoods(searchModel.getCategoryId, searchModel.getCategoryName);
+    }
+
+  }
+  ```
+   2. 여러 서비스 및 레포지토리를 호출할 경우에는 Colla(협업 어플리케이션)라는 네이밍을 붙여 클래스명을 짓습니다.
+    ```java
+  @Service
+  @RequiredArgsConstructor
+  public class GoodsCollaService {
+
+    private final CodeService codeService;
+    private final GoodsRepository goodsRepository;
+    private final UserRepository userRepository;
+
+    public GoodsModel getGoods(SearchModel searchModel) {
+      GoodsModel goodsModel = goodsRepository.findGoods(searchModel.getCategoryId(), searchModel.getCategoryName);
+      Integer code = codeSerivce.findCode(searchModel.getCode());
+      String name = userRepository.findUsername(searchModel.getName());
+
+      goodsModel.setCode(code);
+      goodsModel.setName(name);
+      return goodsModel;
+      }
+
+  }  
+  ```
+  * Repository
+    * DB와의 통신하는 로직을 수행합니다.
+  ```java
+  @Repository
+  @RequiredArgsConstructor
+  public class GoodsRepository {
+    private final DSLContext dslContext;
+
+    public GoodsModel findGoods(Integer id, String categoryName) {
+      return dslContext
+      .select(GOODS.ID, GOODS.CATEGORY_NAME)
+      .from(GOODS)
+      .fetchOneInto(GoodsModel.class);
+    }
+  }
+  ```
