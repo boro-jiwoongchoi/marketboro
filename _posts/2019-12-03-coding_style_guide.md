@@ -47,7 +47,7 @@ layout: post
     }
     ```` 
   * if *case 2*
-    ``` java *case 2*
+    ``` java
     public void method() {
         for(Model model : ModelList) {
             method2(model);
